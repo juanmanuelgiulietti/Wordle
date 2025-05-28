@@ -103,4 +103,5 @@ def generarArchivoDePalabras():
 def main():
     archivo = generarArchivoDePalabras()
     prepararPartida(archivo)
+    empezarJuego(archivo)
 main()    
