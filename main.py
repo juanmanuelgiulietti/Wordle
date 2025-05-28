@@ -1,6 +1,46 @@
 import os
 import random
 
+def empezarJuego(archivo):
+    rutaActual = os.path.dirname(__file__)
+    rutaArchivo = os.path.join(rutaActual, archivo)
+    
+    try:
+        with open(rutaArchivo, "r") as archivoLectura:
+            palabras = [palabra.strip().lower() for palabra in archivoLectura]
+             
+            palabraSecreta = random.choice(palabras)
+             
+            intentos = 6
+            errores = 0
+            ganador = False
+            
+            while errores < intentos and not ganador:
+                palabraIngresada = str(input("🔤 Ingrese una palabra de 5 letras: ")).lower()
+                while len(palabraIngresada) != 5:
+                    print("❌ Palabra inválida. Acordate que debe tener exactamente 5 letras.")
+                    palabraIngresada = str(input("🔤 Ingrese una palabra de 5 letras: ")).lower()
+                
+                if palabraIngresada not in palabras:
+                    print("🚫 Esa palabra no está en el diccionario.")
+                    errores += 1
+                    print(f"❗ Intentos restantes: {intentos - errores}")
+                    continue
+             
+                if palabraIngresada == palabraSecreta:
+                    print(f"🎉 ¡Correcto! Adivinaste la palabra secreta: {palabraSecreta.upper()}")
+                    ganador = True
+                else:
+                    print("❌ No es la palabra secreta.")
+                    errores += 1
+                    print(f"❗ Intentos restantes: {intentos - errores}")
+                    
+            if not ganador:
+                print(f"💀 Te quedaste sin intentos. La palabra era: {palabraSecreta.upper()}")
+             
+    except Exception as e:
+        print(f"Ocurrio un error: {e}")    
+
 def prepararPartida(archivo):
     rutaActual = os.path.dirname(__file__)
     rutaArchivo = os.path.join(rutaActual, archivo)
@@ -62,5 +102,5 @@ def generarArchivoDePalabras():
 
 def main():
     archivo = generarArchivoDePalabras()
-    palabraGenerada = prepararPartida(archivo)
+    prepararPartida(archivo)
 main()    
