@@ -1,6 +1,24 @@
 import os
 import random
 
+def prepararPartida(archivo):
+    rutaActual = os.path.dirname(__file__)
+    rutaArchivo = os.path.join(rutaActual, archivo)
+    
+    try:
+        with open(rutaArchivo, "r") as archivo:
+            palabras = []
+            for palabra in archivo:
+                palabra = palabra.strip()
+                palabras.append(palabra)
+            
+            palabraGenerada = random.choice(palabras)
+        return palabraGenerada
+    
+    except Exception as e:
+        print(f"Ocurrio un error: {e}")    
+    
+
 def generarArchivoDePalabras():
     palabras = [
     "perro", "gatos", "techo", "verde", "clave", "piano", "banco", "fuego", "calor", "doler",
@@ -37,10 +55,12 @@ def generarArchivoDePalabras():
             
             for palabra in seleccion:
                 archivo.write(f"{palabra}\n")
+        return "palabras.txt"
         
     except Exception as e:
         print(f"Ocurrio un error: {e}")       
 
 def main():
-    generarArchivoDePalabras()
+    archivo = generarArchivoDePalabras()
+    palabraGenerada = prepararPartida(archivo)
 main()    
