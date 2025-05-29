@@ -1,6 +1,27 @@
 import os
 import random
 
+def generarPistas(palabraIngresada, palabraSecreta):
+    palabraIngresada = list(palabraIngresada)
+    palabraSecreta = list(palabraSecreta)
+    pistas = ["⬜"] * 5
+    
+    for i in range(5):
+            if palabraIngresada[i] == palabraSecreta[i]:
+                pistas[i] = "🟩"
+                palabraSecreta[i] = "_"
+                print(f"🟩 ¡Perfecto! {palabraIngresada[i]} está justo donde debe estar.")
+
+    for i in range(5):
+        if pistas[i] == "⬜" and palabraIngresada[i] in palabraSecreta:
+            pistas[i] = "🟨"
+            palabraSecreta[palabraSecreta.index(palabraIngresada[i])] = "_"
+            
+    for i in range(5):
+        if pistas[i] == "⬜" and palabraIngresada[i] not in palabraSecreta:
+            print(f"⬜ Nada que ver, {palabraIngresada[i]} no forma parte de la palabra.")
+
+    
 def empezarJuego(archivo):
     rutaActual = os.path.dirname(__file__)
     rutaArchivo = os.path.join(rutaActual, archivo)
@@ -39,7 +60,9 @@ def empezarJuego(archivo):
                 print(f"💀 Te quedaste sin intentos. La palabra era: {palabraSecreta.upper()}")
              
     except Exception as e:
-        print(f"Ocurrio un error: {e}")    
+        print(f"Ocurrio un error: {e}")
+    
+    return palabraIngresada, palabraSecreta
 
 def prepararPartida(archivo):
     rutaActual = os.path.dirname(__file__)
@@ -103,5 +126,6 @@ def generarArchivoDePalabras():
 def main():
     archivo = generarArchivoDePalabras()
     prepararPartida(archivo)
-    empezarJuego(archivo)
+    palabraIngresada, palabraSecreta =  empezarJuego(archivo)
+    generarPistas(palabraIngresada, palabraSecreta)
 main()    
