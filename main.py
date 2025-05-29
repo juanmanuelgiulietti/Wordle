@@ -1,6 +1,22 @@
 import os
 import random
 
+def continuarJugando():
+    try:
+        continuar = str(input("¿Querés jugar otra vez? (s/n)")).lower()
+        while continuar != "s" or continuar != "n":
+            print("❌ Entrada inválida. Por favor, escribí S para sí o N para no.")
+            continuar = str(input("¿Querés jugar otra vez? (s/n)")).lower()
+            
+            if continuar == "s":
+                return True
+            else:
+                return False
+            
+            
+    except Exception as e:
+        print(f"Ocurrio un error: {e}")
+
 def generarPistas(palabraIngresada, palabraSecreta):
     palabraIngresada = list(palabraIngresada)
     palabraSecreta = list(palabraSecreta)
@@ -20,6 +36,8 @@ def generarPistas(palabraIngresada, palabraSecreta):
     for i in range(5):
         if pistas[i] == "⬜" and palabraIngresada[i] not in palabraSecreta:
             print(f"⬜ Nada que ver, {palabraIngresada[i]} no forma parte de la palabra.")
+    
+    return pistas
 
     
 def empezarJuego(archivo):
@@ -54,15 +72,15 @@ def empezarJuego(archivo):
                 else:
                     print("❌ No es la palabra secreta.")
                     errores += 1
-                    print(f"❗ Intentos restantes: {intentos - errores}")
+                    print(f"❗ Intentos restantes: {intentos - errores}")  
+                    pistas = generarPistas(palabraIngresada, palabraSecreta)
+                    print("".join(pistas))
                     
             if not ganador:
                 print(f"💀 Te quedaste sin intentos. La palabra era: {palabraSecreta.upper()}")
              
     except Exception as e:
         print(f"Ocurrio un error: {e}")
-    
-    return palabraIngresada, palabraSecreta
 
 def prepararPartida(archivo):
     rutaActual = os.path.dirname(__file__)
@@ -126,6 +144,12 @@ def generarArchivoDePalabras():
 def main():
     archivo = generarArchivoDePalabras()
     prepararPartida(archivo)
-    palabraIngresada, palabraSecreta =  empezarJuego(archivo)
-    generarPistas(palabraIngresada, palabraSecreta)
+    empezarJuego(archivo)
+    continuarJugando()
+    
+    if continuarJugando():
+        empezarJuego()
+    else:
+        print("🎮 ¡Gracias por jugar al Wordle! Nos vemos la próxima. 👋")
+        
 main()    
