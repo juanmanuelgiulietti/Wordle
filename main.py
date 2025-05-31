@@ -13,7 +13,6 @@ def continuarJugando():
             else:
                 return False
             
-            
     except Exception as e:
         print(f"Ocurrio un error: {e}")
 
@@ -38,7 +37,6 @@ def generarPistas(palabraIngresada, palabraSecreta):
             print(f"⬜ Nada que ver, {palabraIngresada[i]} no forma parte de la palabra.")
     
     return pistas
-
     
 def empezarJuego(archivo):
     rutaActual = os.path.dirname(__file__)
@@ -72,15 +70,15 @@ def empezarJuego(archivo):
                 else:
                     print("❌ No es la palabra secreta.")
                     errores += 1
-                    print(f"❗ Intentos restantes: {intentos - errores}")  
-                    pistas = generarPistas(palabraIngresada, palabraSecreta)
-                    print("".join(pistas))
+                    print(f"❗ Intentos restantes: {intentos - errores}")
                     
             if not ganador:
                 print(f"💀 Te quedaste sin intentos. La palabra era: {palabraSecreta.upper()}")
              
     except Exception as e:
         print(f"Ocurrio un error: {e}")
+    
+    return palabraIngresada, palabraSecreta
 
 def prepararPartida(archivo):
     rutaActual = os.path.dirname(__file__)
@@ -144,12 +142,6 @@ def generarArchivoDePalabras():
 def main():
     archivo = generarArchivoDePalabras()
     prepararPartida(archivo)
-    empezarJuego(archivo)
-    continuarJugando()
-    
-    if continuarJugando():
-        empezarJuego()
-    else:
-        print("🎮 ¡Gracias por jugar al Wordle! Nos vemos la próxima. 👋")
-        
+    palabraIngresada, palabraSecreta =  empezarJuego(archivo)
+    generarPistas(palabraIngresada, palabraSecreta)
 main()    
