@@ -1,0 +1,7 @@
+Jugador: juan
+Dificultad: 1
+Resultado: Perdió
+Palabra secreta: CIELO
+Intentos usados: 7
+Fecha y hora: 01/06/2025 13:22
+────────────────────────────

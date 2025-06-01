@@ -1,5 +1,33 @@
 import json
 import random
+from datetime import datetime
+
+def mostrarHistorial(historial):
+    try:
+        with open(historial, "r", encoding="utf-8") as archivo:
+            print("\n📖 HISTORIAL DE PARTIDAS")
+            print("────────────────────────────")
+            for linea in archivo:
+                print(linea.strip())
+    except FileNotFoundError:
+        print("⚠️ No hay historial guardado aún.")
+
+def actualizarHistorial(nombre, palabraSecreta, errores, dificultad, gano, fecha_hora):
+    try:
+        with open("historial_partidas.txt", "a", encoding="utf-8") as archivo:
+            linea = (
+                f"Jugador: {nombre}\n"
+                f"Dificultad: {dificultad}\n"
+                f"Resultado: {'Ganó' if gano else 'Perdió'}\n"
+                f"Palabra secreta: {palabraSecreta.upper()}\n"
+                f"Intentos usados: {errores}\n"
+                f"Fecha y hora: {fecha_hora}\n"
+                "────────────────────────────\n"
+            )
+            archivo.write(linea)
+        return "historial_partidas.txt"
+    except Exception as e:
+        print(f"Ocurrio un error: {e}")
 
 def continuarJugando():
     try:
@@ -63,15 +91,15 @@ def generarListasDePalabras(dificultad):
             
             if dificultad == 1:
                 longitud = 5
-                intentos = 6
+                intentos = 7
                 palabras = data[str(longitud)]
             elif dificultad == 2:
                 longitud = 6
-                intentos = 5 
+                intentos = 6 
                 palabras = data[str(longitud)]   
             else:
                 longitud = 7
-                intentos = 4
+                intentos = 5
                 palabras = data[str(longitud)]  
         return palabras, longitud, intentos
     except Exception as e:
@@ -148,6 +176,9 @@ def main():
         else:
             print(f"💀 Te quedaste sin intentos. La palabra era: {palabraSecreta.upper()}")
             partidasPerdidas += 1
+            
+        fecha_hora = datetime.now().strftime("%d/%m/%Y %H:%M")
+        historial = actualizarHistorial(nombre, palabraSecreta, errores, dificultad, ganador, fecha_hora)
 
         if not continuarJugando():
             print("\n📊 RESUMEN DE LA PARTIDA")
@@ -157,5 +188,6 @@ def main():
             print(f"💀 Partidas perdidas: {partidasPerdidas}")
             print("🙌 ¡Gracias por jugar a Wordle en Python!")
             print("Volvé pronto para poner a prueba tu vocabulario. 😄")
+            mostrarHistorial(historial)
             break
 main()    
